@@ -1,0 +1,15 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}{{ issue.summary }}{% endblock %}
+
+{% block content %}
+  <h1>{{ issue.summary }}</h1>
+  <p>{{ issue.description }}</p>
+  <p><strong>Статус:</strong> {{ issue.status.name }}</p>
+  <p><strong>Тип:</strong> {% for type in issue.types.all %}{{ type.name }} {% endfor %}</p>
+  <p><strong>Создано:</strong> {{ issue.created_at }}</p>
+  <p><strong>Обновлено:</strong> {{ issue.updated_at }}</p>
+  <a class="btn btn-primary" href="{% url 'issue_edit' issue.pk %}">Редактировать</a>
+  <a class="btn btn-danger" href="{% url 'issue_delete' issue.pk %}">Удалить</a>
+  <a class="btn btn-secondary" href="{% url 'issue_list' %}">Назад</a>
+{% endblock %}

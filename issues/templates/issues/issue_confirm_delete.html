@@ -1,0 +1,12 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}Удалить задачу{% endblock %}
+
+{% block content %}
+  <h1>Удалить задачу "{{ issue.summary }}"?</h1>
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Удалить</button>
+    <a class="btn btn-secondary" href="{% url 'issue_list' %}">Отмена</a>
+  </form>
+{% endblock %}

@@ -1,11 +1,12 @@
+# issue_tracker/settings.py
+
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure--d*i$8o2z&rm3f!fj7wx@oe98s7+j9mr(e*@b%twnl46$m1+rt'
-
+SECRET_KEY = 'your-secret-key'
 DEBUG = True
-
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -46,9 +47,7 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'issue_tracker.wsgi.application'
-
 
 DATABASES = {
     'default': {
@@ -56,7 +55,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -74,14 +72,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
-
-
+STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

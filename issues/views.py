@@ -8,8 +8,11 @@ from django.views import View
 from .models import Issue
 from .forms import IssueForm
 from django.contrib.auth.models import User
+from django.http import HttpResponseForbidden
+from django.views.generic import TemplateView
 
 class IssueListView(LoginRequiredMixin, ListView):
+
     model = Issue
     template_name = 'issues/issue_list.html'
 
@@ -29,17 +32,19 @@ class IssueUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'issues/issue_form.html'
     success_url = reverse_lazy('issue_list')
 
-
-class IssueDetailView(DetailView):
+class IssueDeleteView(DeleteView):
     model = Issue
-    template_name = 'issues/issue_detail.html'
+    template_name = 'issues/issue_confirm_delete.html'
+    success_url = reverse_lazy('issue-list')
 
     def get_context_data(self, **kwargs):
-       
         context = super().get_context_data(**kwargs)
-        
+        issue = self.get_object()
+
+        if not self.request.user.has_perm('issues.add_user_to_issue'):
+            return HttpResponseForbidden("У вас нет разрешения на добавление пользователей в проект.")
+
         context['users'] = User.objects.all()
-        
         return context
     
 class AddUserToIssueView(View):
@@ -57,3 +62,6 @@ class RemoveUserFromIssueView(View):
         user = get_object_or_404(User, id=user_id)
         issue.users.remove(user)
         return redirect('issue_detail', issue_id=issue.id)
+    
+class HomeView(TemplateView):
+    template_name = 'home.html'

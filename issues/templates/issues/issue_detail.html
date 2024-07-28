@@ -1,15 +1,30 @@
-{% extends 'base_generic.html' %}
+<h3>Назначенные пользователи</h3>
+<ul>
+    {% for user in issue.users.all %}
+    <li>{{ user.username }}</li>
+    {% endfor %}
+</ul>
 
-{% block title %}{{ issue.summary }}{% endblock %}
+<h4>Добавить пользователя</h4>
+<form method="post" action="{% url 'add_user_to_issue' issue.id %}">
+    {% csrf_token %}
+    <label for="user_id">Выберите пользователя:</label>
+    <select name="user_id" id="user_id">
+        {% for user in users %}
+        <option value="{{ user.id }}">{{ user.username }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Добавить</button>
+</form>
 
-{% block content %}
-  <h1>{{ issue.summary }}</h1>
-  <p>{{ issue.description }}</p>
-  <p><strong>Статус:</strong> {{ issue.status.name }}</p>
-  <p><strong>Тип:</strong> {% for type in issue.types.all %}{{ type.name }} {% endfor %}</p>
-  <p><strong>Создано:</strong> {{ issue.created_at }}</p>
-  <p><strong>Обновлено:</strong> {{ issue.updated_at }}</p>
-  <a class="btn btn-primary" href="{% url 'issue_edit' issue.pk %}">Редактировать</a>
-  <a class="btn btn-danger" href="{% url 'issue_delete' issue.pk %}">Удалить</a>
-  <a class="btn btn-secondary" href="{% url 'issue_list' %}">Назад</a>
-{% endblock %}
+<h4>Удалить пользователя</h4>
+<form method="post" action="{% url 'remove_user_from_issue' issue.id %}">
+    {% csrf_token %}
+    <label for="user_id">Выберите пользователя:</label>
+    <select name="user_id" id="user_id">
+        {% for user in issue.users.all %}
+        <option value="{{ user.id }}">{{ user.username }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Удалить</button>
+</form>
